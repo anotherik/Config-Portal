@@ -1,6 +1,10 @@
 # Config Portal – Software Composition Analysis (SCA) Demonstration
 
-**ConfigPort** is a purposely vulnerable Python Flask web application that simulates a lightweight internal tool used by development teams to import and preview YAML-based project configuration files. These configurations typically define metadata like project name, environment, and setup scripts.
+> ✅ **This branch contains the secure version of Config-Portal**, using `yaml.safe_load()` and updated dependencies to prevent YAML deserialization vulnerabilities.
+> 
+> If you're looking for the vulnerable version to test and demonstrate SCA tools, switch to the [`main` branch](../../tree/main).
+
+**Config Portal** is a purposely vulnerable Python Flask web application that simulates a lightweight internal tool used by development teams to import and preview YAML-based project configuration files. These configurations typically define metadata like project name, environment, and setup scripts.
 
 This project is designed to demonstrate **Software Composition Analysis (SCA)** in action by showing how known vulnerable dependencies (like `pyyaml==5.1`) can be identified, exploited, and remediated using open-source security tools.
 
@@ -47,7 +51,7 @@ This app serves as a real-world case study to:
 - Highlights the importance of dependency scanning  
 
 
-## ⚠️ CVEs Demonstrated
+## ⚠️ CVEs Demonstrated (fixed in this branch)
 
 | CVE ID         | Description                                               |
 |----------------|-----------------------------------------------------------|
@@ -72,13 +76,13 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Install the vulnerable dependencies
+### 3. Install the dependencies
 
 ```
 pip install -r requirements.txt
 ```
 
-## 🔥 Run the Vulnerable App
+## Run the Application
 
 ```
 python app.py
@@ -87,7 +91,7 @@ python app.py
 Then open your browser at: [http://localhost:5000](http://localhost:5000)
 
 
-## 🧪 Exploit Example
+## 🧪 Exploit Example (fixed in this branch)
 
 Paste this into the form:
 
@@ -95,22 +99,7 @@ Paste this into the form:
 !!python/object/apply:subprocess.check_output [["id"]]
 ```
 
-Expected: Server executes `id` and returns the output in the HTML.
-
-
-## 🛡️ Fix It
-
-To patch the vulnerability:
-
-1. Replace `yaml.load(...)` with `yaml.safe_load(...)` in `app.py`  
-2. Upgrade PyYAML in `requirements.txt`:
-
-```
-pyyaml>=5.4
-```
-
-3. Reinstall dependencies and re-run your SCA.
-
+Expected message: Rejected unsafe YAML content: potential exploit blocked.
 
 ## 🔍 Scan with SCA Tools
 
@@ -125,13 +114,6 @@ osv-scanner --lockfile=requirements.txt
 ```
 trivy fs --scanners vuln .
 ```
-
-## ✅ Secure Coding Tips
-
-- Never use `yaml.load()` on untrusted input  
-- Use `safe_load()` or stricter parsers  
-- Always pin and audit third-party packages  
-- Integrate SCA into your CI/CD pipeline  
 
 ## 📜 License
 
