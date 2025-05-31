@@ -126,6 +126,11 @@ osv-scanner --lockfile=requirements.txt
 trivy fs --scanners vuln .
 ```
 
+## 🧪 SCA Workflow Status
+
+![Trivy SCA Scan (main)](https://github.com/anotherik/Config-Portal/actions/workflows/trivy-sca.yml/badge.svg?branch=main)
+![Trivy SCA Scan (secure)](https://github.com/anotherik/Config-Portal/actions/workflows/trivy-sca.yml/badge.svg?branch=secure)
+
 ## ✅ Secure Coding Tips
 
 - Never use `yaml.load()` on untrusted input  
