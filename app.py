@@ -53,7 +53,7 @@ def render_yaml(data):
 def import_config():
     yaml_data = request.form['yaml_data']
     try:
-        config = yaml.load(yaml_data, Loader=yaml.Loader)
+        config = yaml.safe_load(yaml_data)
         html_content = render_yaml(config)
 
         template = f"""
@@ -75,10 +75,8 @@ def import_config():
 
         return render_template_string(template)
 
-
-    except Exception as e:
-        return f"<pre>Error loading config:\n{e}</pre>"
-
+    except yaml.constructor.ConstructorError:
+        return "<pre>Rejected unsafe YAML content: potential exploit blocked.</pre>"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
