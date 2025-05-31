@@ -1,0 +1,29 @@
+name: SCA Scan with Trivy
+
+on:
+  push:
+    branches: [ main, secure ]
+  pull_request:
+    branches: [ main, secure ]
+
+jobs:
+  scan:
+    name: Trivy SCA Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Trivy (Secure Method)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget apt-transport-https gnupg
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install -y trivy
+
+      - name: Run Trivy SCA Scan
+        run: |
+          trivy fs --scanners vuln . || true
