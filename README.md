@@ -120,6 +120,11 @@ pyyaml>=5.4
 osv-scanner --lockfile=requirements.txt
 ```
 
+### Trivy
+
+```
+trivy fs --scanners vuln .
+```
 
 ## ✅ Secure Coding Tips
 
