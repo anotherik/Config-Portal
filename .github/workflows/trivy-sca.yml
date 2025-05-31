@@ -1,4 +1,4 @@
-name: SCA Scan with Trivy
+name: SCA Scan with Trivy (secure branch)
 
 on:
   push:
@@ -24,6 +24,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y trivy
 
-      - name: Run Trivy SCA Scan
+      - name: Run Trivy SCA Scan and fail on Critical
         run: |
-          trivy fs --scanners vuln . || true
+          trivy fs --scanners vuln . --severity CRITICAL --exit-code 1
