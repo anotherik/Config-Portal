@@ -1,6 +1,6 @@
 # Config Portal – Software Composition Analysis (SCA) Demonstration
 
-**ConfigPort** is a purposely vulnerable Python Flask web application that simulates a lightweight internal tool used by development teams to import and preview YAML-based project configuration files. These configurations typically define metadata like project name, environment, and setup scripts.
+**Config Portal** is a purposely vulnerable Python Flask web application that simulates a lightweight internal tool used by development teams to import and preview YAML-based project configuration files. These configurations typically define metadata like project name, environment, and setup scripts.
 
 This project is designed to demonstrate **Software Composition Analysis (SCA)** in action by showing how known vulnerable dependencies (like `pyyaml==5.1`) can be identified, exploited, and remediated using open-source security tools.
 
