@@ -1,3 +1,6 @@
+![Trivy SCA Scan (main)](https://github.com/anotherik/Config-Portal/actions/workflows/trivy-sca-main.yml/badge.svg)
+![Trivy SCA Scan (secure)](https://github.com/anotherik/Config-Portal/actions/workflows/trivy-sca-secure.yml/badge.svg)
+
 # Config Portal – Software Composition Analysis (SCA) Demonstration
 
 **Config Portal** is a purposely vulnerable Python Flask web application that simulates a lightweight internal tool used by development teams to import and preview YAML-based project configuration files. These configurations typically define metadata like project name, environment, and setup scripts.
@@ -125,11 +128,6 @@ osv-scanner --lockfile=requirements.txt
 ```
 trivy fs --scanners vuln .
 ```
-
-## 🧪 SCA Workflow Status
-
-![Trivy SCA Scan (main)](https://github.com/anotherik/Config-Portal/actions/workflows/trivy-sca.yml/badge.svg?branch=main)
-![Trivy SCA Scan (secure)](https://github.com/anotherik/Config-Portal/actions/workflows/trivy-sca.yml/badge.svg?branch=secure)
 
 ## ✅ Secure Coding Tips
 
