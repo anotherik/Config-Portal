@@ -54,17 +54,16 @@ This app serves as a real-world case study to:
 
 | CVE ID         | Description                                               |
 |----------------|-----------------------------------------------------------|
-| CVE-2017-18342 | Arbitrary object deserialization with `yaml.load()`       |
-| CVE-2019-20477 | Incomplete fix allowing exploitation via `Popen` class    |
-| CVE-2020-1747  | Unsafe behavior in `FullLoader` with `object/new`         |
-
+| CVE-2019-20477 | PyYAML: command execution through python/object/apply constructor in FullLoader    |
+| CVE-2020-1747  | PyYAML: arbitrary command execution through python/object/new when FullLoader is used         |
+| CVE-2020-14343 | PyYAML: command execution when it processes untrusted YAML files through the `full_load` method or with the `FullLoader` loader.         |
 
 ## 🏗️ Setup
 
 ### 1. Clone the repo
 
 ```
-git clone https://github.com/YOUR-USERNAME/ConfigPortal.git
+git clone https://github.com/anotherik/Config-Portal.git
 cd ConfigPortal
 ```
 
