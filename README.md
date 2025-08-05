@@ -8,7 +8,7 @@
 
 This project is designed to demonstrate **Software Composition Analysis (SCA)** in action by showing how known vulnerable dependencies (like `pyyaml==5.1`) can be identified, exploited, and remediated using open-source security tools.
 
-## 🧾 Example Config Input
+## Example Config Input
 
 Below is a sample YAML configuration that a developer might upload through Config Portal. It defines metadata for a project, deployment preferences, and contact information.
 
@@ -60,7 +60,7 @@ This app serves as a real-world case study to:
 | CVE-2020-1747  | Unsafe behavior in `FullLoader` with `object/new`         |
 
 
-## 🏗️ Setup
+## Setup
 
 ### 1. Clone the repo
 
