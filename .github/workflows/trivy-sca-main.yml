@@ -9,21 +9,46 @@ on:
 jobs:
   scan:
     name: Trivy SCA Scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
-      - name: Install Trivy (Secure Method)
+      - name: Install Cosign pinned version
+        env:
+          COSIGN_VERSION: "3.1.1"
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget apt-transport-https gnupg
-          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
-          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update
-          sudo apt-get install -y trivy
+          set -euo pipefail
 
-      - name: Run Trivy SCA Scan and fail on Critical
+          wget -q "https://github.com/sigstore/cosign/releases/download/v${COSIGN_VERSION}/cosign-linux-amd64"
+          sudo install -m 0755 cosign-linux-amd64 /usr/local/bin/cosign
+
+          cosign version
+
+      - name: Install Trivy pinned and verified
+        env:
+          TRIVY_VERSION: "0.71.2"
         run: |
+          set -euo pipefail
+
+          ASSET="trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
+          BASE_URL="https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}"
+
+          wget -q "${BASE_URL}/${ASSET}"
+          wget -q "${BASE_URL}/${ASSET}.sigstore.json"
+
+          cosign verify-blob "${ASSET}" \
+            --bundle "${ASSET}.sigstore.json" \
+            --certificate-oidc-issuer="https://token.actions.githubusercontent.com" \
+            --certificate-identity="https://github.com/aquasecurity/trivy/.github/workflows/reusable-release.yaml@refs/tags/v${TRIVY_VERSION}"
+
+          tar -xzf "${ASSET}"
+          sudo install -m 0755 trivy /usr/local/bin/trivy
+
+          trivy --version
+
+      - name: Run Trivy SCA scan and generate SARIF
+        run: |
+          set -euo pipefail
           trivy fs --scanners vuln . --severity CRITICAL --exit-code 1
